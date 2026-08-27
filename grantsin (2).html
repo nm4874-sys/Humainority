@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>GrantsIn — Grant management for nonprofits</title>
+<meta name="description" content="GrantsIn is a grant management platform for small and mid-sized nonprofits. One place for the full submission, from first draft to final record." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500;1,9..144,600&family=Geist:wght@400;500&family=Geist+Mono:wght@400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+:root{
+  --forest:#1F3D2B; --cream:#F2EBDD; --bone:#EDE4D0; --amber:#C77A3F; --amber-hover:#A86430;
+  --ink:#1A1815; --muted-forest:#2D5238; --stone:#807975;
+  --side:64px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bone);color:var(--ink);font-family:'Geist',system-ui,sans-serif;-webkit-font-smoothing:antialiased;font-size:18px;line-height:1.6}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+.mono{font-family:'Geist Mono',monospace;font-size:13px;text-transform:uppercase;letter-spacing:0.05em}
+.italic{font-style:italic}
+.btn{display:inline-block;background:var(--amber);color:var(--cream);font-family:'Geist',sans-serif;font-weight:500;font-size:16px;padding:14px 28px;border:0;border-radius:6px;cursor:pointer;transition:background .2s ease}
+.btn:hover{background:var(--amber-hover)}
+
+/* SECTION: NAV */
+.nav{background:var(--forest);color:var(--cream);display:flex;justify-content:space-between;align-items:center;padding:24px var(--side)}
+.nav .logo{font-family:'Fraunces',serif;font-weight:500;font-size:22px}
+.nav .join{font-size:14px;color:var(--cream)}
+
+/* HERO */
+.hero{background:var(--forest);color:var(--cream);min-height:90vh;padding:64px var(--side);display:flex;align-items:center;gap:48px}
+.hero .left{flex:0 0 60%}
+.hero .right{flex:0 0 40%;display:flex;justify-content:center;align-items:center;min-height:480px;position:relative}
+.hero .label{color:var(--amber)}
+.hero h1{font-family:'Fraunces',serif;font-weight:600;font-size:64px;line-height:1.1;margin-top:32px;color:var(--cream);opacity:0;transform:translateY(12px)}
+.hero h1 .it{font-style:italic;font-weight:600}
+.hero .sub{font-size:20px;line-height:1.5;color:rgba(242,235,221,0.8);margin-top:40px;max-width:560px}
+.hero .ctas{margin-top:32px;display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.hero .link{color:var(--cream);border-bottom:1px solid rgba(242,235,221,0.6);padding-bottom:2px;font-size:16px}
+
+/* DOCUMENT STACK */
+.docstack{position:relative;width:340px;height:440px}
+.doc{position:absolute;top:0;left:0;width:280px;height:360px;background:var(--cream);border:1px solid rgba(31,61,43,0.4);border-radius:4px;box-shadow:0 12px 30px rgba(0,0,0,0.18);padding:24px;opacity:0;transform:scale(.95)}
+.doc.d1{transform:rotate(-3deg) scale(.95);top:20px;left:0}
+.doc.d2{transform:rotate(0deg) scale(.95);top:40px;left:30px}
+.doc.d3{transform:rotate(4deg) scale(.95);top:60px;left:60px}
+.doc .title-line{height:6px;background:var(--ink);width:60%;border-radius:1px;opacity:0.85}
+.doc .field-line{height:2px;background:var(--ink);margin-top:18px;border-radius:1px;opacity:0.45}
+.doc .field-line.w1{width:90%}.doc .field-line.w2{width:75%}.doc .field-line.w3{width:85%}.doc .field-line.w4{width:65%}.doc .field-line.w5{width:80%}
+.doc .sig{height:2px;background:var(--ink);width:35%;margin-top:36px;opacity:0.7}
+.doc .stamp{position:absolute;top:18px;right:14px;color:var(--amber);border:1px solid var(--amber);padding:3px 6px;font-family:'Geist Mono',monospace;font-size:10px;letter-spacing:0.08em;transform:rotate(-8deg);text-transform:uppercase}
+
+/* SECTION 3 — PROBLEM */
+.problem{background:var(--bone);padding:96px var(--side);text-align:center;min-height:80vh}
+.section-label{font-family:'Geist Mono',monospace;font-size:13px;text-transform:uppercase;letter-spacing:0.05em;color:var(--stone)}
+.problem h2{font-family:'Fraunces',serif;font-weight:500;font-size:44px;color:var(--ink);margin-top:40px;line-height:1.15}
+.scatter{position:relative;margin:64px auto 0;width:min(820px,100%);height:380px}
+.scatter svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.chip{position:absolute;width:90px;height:60px;background:var(--bone);border:1px solid var(--ink);display:flex;align-items:center;justify-content:center;text-align:center;padding:6px;font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:0.05em;color:var(--stone);text-transform:uppercase;opacity:0}
+.problem .prose{margin:64px auto 0;max-width:640px;font-size:20px;color:var(--ink)}
+
+/* SECTION 4 — ONE SOURCE */
+.layer{padding:96px var(--side);min-height:90vh;display:flex;align-items:center;gap:64px}
+.layer.forest{background:var(--forest);color:var(--cream)}
+.layer.cream{background:var(--cream);color:var(--ink)}
+.layer.bone{background:var(--bone);color:var(--ink)}
+.layer .col-text-45{flex:0 0 45%}
+.layer .col-visual-55{flex:0 0 55%;display:flex;justify-content:center;align-items:center}
+.layer .col-text-45.cream-side{flex:0 0 45%}
+.layer .col-visual-55.cream-side{flex:0 0 55%}
+.layer h3{font-family:'Fraunces',serif;font-weight:500;font-size:36px;margin-top:32px;line-height:1.15}
+.layer.forest h3{color:var(--cream)}
+.layer p.body{font-size:18px;line-height:1.6;margin-top:32px}
+.layer.forest p.body{color:rgba(242,235,221,0.85)}
+.layer .label-amber{color:var(--amber)}
+.layer .label-stone{color:var(--stone)}
+
+/* data->form visual */
+.flow{display:flex;align-items:center;gap:20px;width:100%;max-width:620px}
+.flow .panel{flex:1;background:var(--cream);border:1px solid rgba(31,61,43,0.35);border-radius:4px;padding:18px;box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+.flow .panel .ptitle{font-family:'Geist Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:var(--stone);margin-bottom:14px}
+.flow .row{display:flex;justify-content:space-between;font-family:'Geist Mono',monospace;font-size:11px;color:var(--ink);padding:7px 0;border-bottom:1px dashed rgba(31,61,43,0.18)}
+.flow .row:last-child{border-bottom:0}
+.flow .row .k{color:var(--stone)}
+.flow .arrow{font-family:'Fraunces',serif;font-size:28px;color:var(--amber);flex:0 0 auto}
+.flow .field{padding:9px 0;border-bottom:1px solid rgba(31,61,43,0.25);font-family:'Geist Mono',monospace;font-size:11px}
+.flow .field .l{display:block;color:var(--stone);font-size:9px;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px}
+.cursor{display:inline-block;width:7px;height:11px;background:var(--ink);margin-left:2px;vertical-align:-1px;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+#flowArrow{animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.6}50%{opacity:1}}
+
+/* SECTION 5 — PDF -> workspace */
+.pdfflow{display:flex;align-items:center;gap:20px;width:100%;max-width:640px}
+.pdfdoc{flex:0 0 220px;height:320px;background:var(--cream);border:1px solid var(--ink);padding:14px;overflow:hidden;font-family:'Geist Mono',monospace;font-size:9px;line-height:1.35;color:var(--ink)}
+.pdfdoc .ph{font-size:9px;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;font-weight:500}
+.pdfdoc .junk{opacity:.78;white-space:normal}
+.workspace{flex:0 0 320px;height:320px;background:var(--cream);border:1px solid var(--ink);padding:22px}
+.workspace .wh{font-family:'Geist Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:var(--stone);margin-bottom:18px}
+.workspace .wfield{margin-bottom:18px}
+.workspace .wfield .wl{font-family:'Geist Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:var(--stone);margin-bottom:6px}
+.workspace .wfield .wi{border-bottom:1px solid var(--ink);padding-bottom:4px;font-size:13px;color:var(--ink)}
+
+/* SECTION 6 — validation */
+.checklist{width:100%;max-width:480px;background:var(--cream);border:1px solid rgba(199,122,63,0.4);border-radius:4px;padding:32px;color:var(--ink)}
+.checklist .ch-head{font-family:'Geist Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.05em;color:var(--stone);margin-bottom:20px}
+.checklist .item{display:flex;gap:12px;padding:10px 0;font-size:14px;align-items:center;position:relative}
+.checklist .item .mark{font-family:'Geist Mono',monospace;font-weight:500}
+.checklist .item.ok .mark{color:var(--forest)}
+.checklist .item.warn{position:relative}
+.checklist .item.warn .mark{color:var(--amber)}
+.checklist .item.warn::after{content:"";position:absolute;left:0;bottom:4px;height:2px;background:var(--amber);width:0}
+.checklist .submit{margin-top:24px;width:100%;background:var(--muted-forest);color:rgba(242,235,221,0.6);padding:12px 24px;border-radius:6px;border:0;font-family:'Geist',sans-serif;font-size:15px;cursor:not-allowed;opacity:.55;text-align:center}
+.italic-amber{font-family:'Fraunces',serif;font-style:italic;font-size:18px;color:var(--amber);margin-top:24px;display:block}
+
+/* SECTION 7 — receipt */
+.receipt{width:320px;height:440px;background:var(--cream);border:1px solid var(--ink);padding:24px;position:relative;box-shadow:0 8px 20px rgba(0,0,0,0.08)}
+.receipt .rh{font-family:'Geist Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:var(--stone);padding-bottom:14px;border-bottom:1px dashed rgba(26,24,21,0.3);margin-bottom:14px}
+.receipt .rrow{font-family:'Geist Mono',monospace;font-size:11px;padding:9px 0;border-bottom:1px dotted rgba(26,24,21,0.25);display:flex;justify-content:space-between;gap:10px}
+.receipt .rrow .rk{color:var(--stone);flex-shrink:0}
+.receipt .rrow .rv{color:var(--ink);text-align:right}
+.receipt .filed{position:absolute;bottom:22px;right:22px;color:var(--amber);border:1px solid var(--amber);padding:4px 10px;font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:0.1em;transform:rotate(-6deg)}
+
+/* SECTION 8 — about */
+.about{background:var(--bone);padding:96px var(--side);min-height:85vh;display:flex;gap:64px;align-items:center}
+.about .l{flex:0 0 50%}
+.about .r{flex:0 0 50%;display:flex;flex-direction:column;align-items:center}
+.about h2{font-family:'Fraunces',serif;font-weight:500;font-size:44px;color:var(--ink);margin-top:32px;line-height:1.15}
+.about p{font-size:20px;line-height:1.6;color:var(--ink);margin-top:48px}
+.about p.second{margin-top:24px}
+.about .signoff{font-family:'Fraunces',serif;font-style:italic;font-size:16px;color:var(--stone);margin-top:48px}
+.photoph{width:480px;max-width:100%;height:600px;background:var(--bone);border:1px solid var(--stone);display:flex;align-items:center;justify-content:center;font-family:'Geist Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.05em;color:var(--stone)}
+.about .caption{font-family:'Geist Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:var(--stone);margin-top:16px}
+
+/* SECTION 9 — waitlist */
+.waitlist{background:var(--forest);color:var(--cream);padding:96px var(--side);min-height:80vh;display:flex;gap:64px;align-items:center}
+.waitlist .l,.waitlist .r{flex:0 0 50%}
+.waitlist h2{font-family:'Fraunces',serif;font-weight:600;font-size:56px;line-height:1.1;color:var(--cream);margin-top:32px}
+.waitlist h2 .it{font-style:italic}
+.waitlist p{font-size:20px;line-height:1.5;color:rgba(242,235,221,0.85);max-width:440px;margin-top:40px}
+.formpanel{background:var(--muted-forest);padding:32px;border-radius:4px;max-width:440px}
+.formpanel label{display:block;font-family:'Geist Mono',monospace;font-size:13px;text-transform:uppercase;letter-spacing:0.05em;color:rgba(242,235,221,0.7);margin-bottom:8px}
+.formpanel input{width:100%;background:transparent;border:0;border-bottom:1px solid rgba(242,235,221,0.6);color:var(--cream);font-family:'Geist',sans-serif;font-size:18px;padding:8px 0;outline:none}
+.formpanel input::placeholder{color:rgba(242,235,221,0.4)}
+.formpanel .btn{width:100%;margin-top:32px;padding:16px 24px;font-size:16px}
+.formpanel .micro{font-size:13px;color:rgba(242,235,221,0.6);margin-top:16px;line-height:1.5}
+
+/* FOOTER */
+.foot{background:var(--forest);color:rgba(242,235,221,0.7);padding:32px var(--side);display:flex;justify-content:space-between;font-size:13px;gap:16px;flex-wrap:wrap}
+
+/* RESPONSIVE */
+@media (max-width:768px){
+  :root{--side:24px}
+  .hero{flex-direction:column;align-items:flex-start;padding:48px var(--side);min-height:auto}
+  .hero .left,.hero .right{flex:1 1 100%;width:100%}
+  .hero h1{font-size:40px}
+  .hero .sub{font-size:17px}
+  .hero .right{margin-top:48px;min-height:420px}
+  .docstack{transform:scale(.85);transform-origin:top left}
+  .problem{padding:64px var(--side)}
+  .problem h2{font-size:28px}
+  .scatter{height:420px}
+  .layer{flex-direction:column;padding:64px var(--side);min-height:auto;gap:48px}
+  .layer .col-text-45,.layer .col-visual-55{flex:1 1 100%;width:100%}
+  .layer h3{font-size:22px}
+  .flow,.pdfflow{flex-direction:column;max-width:100%}
+  .flow .arrow,.pdfflow .arrow{transform:rotate(90deg)}
+  .pdfdoc,.workspace{flex:1 1 auto;width:100%;max-width:360px}
+  .checklist{max-width:100%}
+  .receipt{width:100%;max-width:360px;height:auto;min-height:440px}
+  .about{flex-direction:column;padding:64px var(--side);gap:48px}
+  .about .l,.about .r{flex:1 1 100%}
+  .about h2{font-size:28px}
+  .photoph{width:100%;height:420px}
+  .waitlist{flex-direction:column;padding:64px var(--side);gap:48px}
+  .waitlist .l,.waitlist .r{flex:1 1 100%}
+  .waitlist h2{font-size:36px}
+  .formpanel{max-width:100%}
+  .nav{padding:20px var(--side)}
+}
+</style>
+</head>
+<body>
+
+<!-- 1 NAV -->
+<header class="nav">
+  <div class="logo">GrantsIn</div>
+  <a class="join" href="#waitlist">Join waitlist →</a>
+</header>
+
+<!-- 2 HERO -->
+<section class="hero">
+  <div class="left">
+    <div class="mono label">FOR NONPROFITS</div>
+    <h1 id="heroH1">
+      Your EIN is in your inbox.<br>
+      Your budget is in a Drive folder.<br>
+      <span class="it">Your last application is in someone's downloads.</span>
+    </h1>
+    <p class="sub">GrantsIn is a grant management platform for small and mid-sized nonprofits. One place for the full submission, from first draft to final record.</p>
+    <div class="ctas">
+      <a href="#waitlist" class="btn">Join the waitlist</a>
+      <a href="#problem" class="link">See how it works ↓</a>
+    </div>
+  </div>
+  <div class="right">
+    <div class="docstack">
+      <div class="doc d1">
+        <div class="title-line"></div>
+        <div class="field-line w1"></div><div class="field-line w2"></div><div class="field-line w3"></div><div class="field-line w4"></div><div class="field-line w5"></div>
+        <div class="sig"></div>
+      </div>
+      <div class="doc d2">
+        <div class="title-line"></div>
+        <div class="field-line w2"></div><div class="field-line w1"></div><div class="field-line w4"></div><div class="field-line w3"></div><div class="field-line w5"></div>
+        <div class="sig"></div>
+      </div>
+      <div class="doc d3">
+        <div class="stamp">Validated</div>
+        <div class="title-line"></div>
+        <div class="field-line w1"></div><div class="field-line w3"></div><div class="field-line w2"></div><div class="field-line w5"></div><div class="field-line w4"></div>
+        <div class="sig"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 PROBLEM -->
+<section class="problem" id="problem">
+  <div class="section-label">01 / THE PROBLEM</div>
+  <h2>Your grant lives in fifteen places at once.</h2>
+  <div class="scatter" id="scatter">
+    <svg viewBox="0 0 820 380" preserveAspectRatio="none">
+      <g stroke="#C77A3F" stroke-opacity="0.4" stroke-width="1" stroke-dasharray="4 5" fill="none">
+        <path d="M90 70 C 250 30, 320 130, 410 90" />
+        <path d="M410 90 C 520 80, 600 200, 700 170" />
+        <path d="M90 70 C 120 200, 200 290, 180 320" />
+        <path d="M180 320 C 320 360, 400 290, 430 310" />
+        <path d="M430 310 C 560 320, 640 260, 700 170" />
+        <path d="M410 90 C 380 200, 460 270, 430 310" />
+      </g>
+    </svg>
+    <div class="chip" style="top:40px;left:50px;transform:rotate(-6deg)">Inbox</div>
+    <div class="chip" style="top:60px;left:380px;transform:rotate(3deg)">Drive folder</div>
+    <div class="chip" style="top:140px;right:60px;transform:rotate(-4deg)">Spreadsheet</div>
+    <div class="chip" style="top:290px;left:140px;transform:rotate(7deg)">Funder portal</div>
+    <div class="chip" style="top:280px;left:400px;transform:rotate(-3deg)">Pinned note</div>
+    <div class="chip" style="top:160px;right:10px;transform:rotate(5deg)">Printed PDF</div>
+  </div>
+  <p class="prose">The same information, entered five times. Deadlines tracked in three different places. Past applications buried in folders nobody opens. It's not that the work is hard. It's that it's everywhere.</p>
+</section>
+
+<!-- 4 ONE SOURCE -->
+<section class="layer forest">
+  <div class="col-text-45">
+    <div class="mono label-amber">02 / ONE SOURCE</div>
+    <h3>Your information, captured once.</h3>
+    <p class="body">Your EIN, your program budgets, your past outcomes, your board roster — entered one time. GrantsIn holds the source. Every application pulls from the same place, so the numbers always match and the typing stops.</p>
+  </div>
+  <div class="col-visual-55">
+    <div class="flow">
+      <div class="panel">
+        <div class="ptitle">Canonical data</div>
+        <div class="row"><span class="k">EIN</span><span>●●●●●●●●●●</span></div>
+        <div class="row"><span class="k">Org name</span><span>Humainority</span></div>
+        <div class="row"><span class="k">Annual budget</span><span>$2.4M</span></div>
+        <div class="row"><span class="k">Staff size</span><span>17</span></div>
+        <div class="row"><span class="k">State</span><span>NY</span></div>
+      </div>
+      <div class="arrow" id="flowArrow">→</div>
+      <div class="panel">
+        <div class="ptitle">Grant application</div>
+        <div class="field"><span class="l">EIN</span>●●●●●●●●●●</div>
+        <div class="field"><span class="l">Organization</span>Humainority</div>
+        <div class="field"><span class="l">Annual budget</span>$2.4M</div>
+        <div class="field"><span class="l">Staff</span>17<span class="cursor"></span></div>
+        <div class="field" style="border-bottom:0"><span class="l">State</span>NY</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 WORKING FORMS -->
+<section class="layer cream">
+  <div class="col-visual-55 cream-side">
+    <div class="pdfflow">
+      <div class="pdfdoc">
+        <div class="ph">SF-424 Federal application</div>
+        <div class="junk">1.a Type of submission ___ 1.b Type of application ___ 1.c Date received ___ 2. Applicant identifier ___ 3. Federal entity identifier ___ 4. Federal award identifier ___ 5.a Legal name ___ 5.b Employer/Taxpayer ID ___ 5.c Organizational DUNS ___ 6. Address: street ___ city ___ county ___ state ___ zip ___ 7. Department name ___ division ___ 8. Person to be contacted ___ prefix ___ first name ___ middle ___ last ___ suffix ___ title ___ org affil ___ phone ___ fax ___ email ___ 9. Type of applicant ___ other ___ 10. Name of federal agency ___ 11. Catalog of federal domestic assistance ___ CFDA title ___ 12. Funding opportunity number ___ title ___ 13. Competition id ___ title ___ 14. Areas affected by project ___ 15. Descriptive title of applicant's project ___ 16. Congressional districts of applicant ___ program/project ___ 17. Proposed project: start date ___ end date ___ 18. Estimated funding: federal ___ applicant ___ state ___ local ___ other ___ program income ___ total ___</div>
+      </div>
+      <div class="arrow" style="font-family:Fraunces,serif;font-size:28px;color:var(--amber)">→</div>
+      <div class="workspace">
+        <div class="wh">Application workspace</div>
+        <div class="wfield"><div class="wl">Project title</div><div class="wi">Workforce Resilience Pilot</div></div>
+        <div class="wfield"><div class="wl">Funding requested</div><div class="wi">$248,000</div></div>
+        <div class="wfield"><div class="wl">Project period</div><div class="wi">Jul 2026 – Jun 2028</div></div>
+        <div class="wfield"><div class="wl">Primary contact</div><div class="wi">J. Martinez</div></div>
+        <div class="wfield"><div class="wl">Congressional district</div><div class="wi">NY-10</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-text-45 cream-side">
+    <div class="mono label-stone">03 / WORKING FORMS</div>
+    <h3>Every form, in plain working order.</h3>
+    <p class="body">Federal forms like the SF-424 get parsed into a clean working interface. You fill out one structured form instead of fighting a thirty-page PDF. Every field is labeled in plain language. The system knows what each field expects.</p>
+  </div>
+</section>
+
+<!-- 6 VALIDATION -->
+<section class="layer forest" id="validation">
+  <div class="col-text-45">
+    <div class="mono label-amber">04 / VALIDATION</div>
+    <h3>Nothing leaves your desk incomplete.</h3>
+    <p class="body">Before you submit, GrantsIn checks the application against the funder's actual requirements. Required fields, character limits, attachments, formatting. If something's off, you see it before the funder does.</p>
+    <span class="italic-amber">A polished application is not the same as a complete one.</span>
+  </div>
+  <div class="col-visual-55">
+    <div class="checklist">
+      <div class="ch-head">Submission check — SF-424</div>
+      <div class="item ok"><span class="mark">✓</span><span>Required fields complete</span></div>
+      <div class="item ok"><span class="mark">✓</span><span>Budget totals match</span></div>
+      <div class="item ok"><span class="mark">✓</span><span>Narrative within character limit</span></div>
+      <div class="item ok"><span class="mark">✓</span><span>Attachments included (3/3)</span></div>
+      <div class="item ok"><span class="mark">✓</span><span>Authorized representative signed</span></div>
+      <div class="item warn" id="warnRow"><span class="mark">⚠</span><span>Project period missing</span></div>
+      <div class="item ok"><span class="mark">✓</span><span>Funder eligibility confirmed</span></div>
+      <button class="submit" disabled>Submit Application</button>
+    </div>
+  </div>
+</section>
+
+<!-- 7 RECORD -->
+<section class="layer bone">
+  <div class="col-visual-55 cream-side">
+    <div class="receipt">
+      <div class="rh">Submission record</div>
+      <div class="rrow"><span class="rk">Application</span><span class="rv">NIH R01 — Workforce</span></div>
+      <div class="rrow"><span class="rk">Submitted</span><span class="rv">Mar 14, 2026 4:47 PM</span></div>
+      <div class="rrow"><span class="rk">Reference</span><span class="rv">GRANT-2026-04781</span></div>
+      <div class="rrow"><span class="rk">Status</span><span class="rv">Received by funder</span></div>
+      <div class="rrow"><span class="rk">Approved by</span><span class="rv">J. Martinez</span></div>
+      <div class="rrow"><span class="rk">Attachments</span><span class="rv">3 files (2.4 MB)</span></div>
+      <div class="rrow"><span class="rk">Checksum</span><span class="rv">a7f4b2e9…8c31</span></div>
+      <div class="filed">Filed</div>
+    </div>
+  </div>
+  <div class="col-text-45 cream-side">
+    <div class="mono label-stone">05 / RECORD</div>
+    <h3>A real record of every submission.</h3>
+    <p class="body">Every submission generates a record. The final PDF, the reference number, the timestamp, the approval chain. When a funder asks what was sent or when, you have the answer in seconds, not in someone's email archive.</p>
+  </div>
+</section>
+
+<!-- 8 ABOUT -->
+<section class="about">
+  <div class="l">
+    <div class="mono label-stone" style="color:var(--stone)">06 / WHO WE ARE</div>
+    <h2>Built by people who file grants.</h2>
+    <p>GrantsIn is being built by Humainority, a 501(c)(3) nonprofit. Grant funding is how we sustain our own work. That means we sit on both sides of this problem. We file the applications. We feel the friction. We measure the rejections.</p>
+    <p class="second">We're not building grant software because we noticed a market. We're building it because we couldn't find a tool that worked for our own grants. So we started designing one.</p>
+    <div class="signoff">Humainority is part of the Equity for AI mission, building infrastructure that makes AI useful for the organizations that need it most.</div>
+  </div>
+  <div class="r">
+    <div class="photoph">[ PHOTO: Practitioner at desk ]</div>
+    <div class="caption">Filing at home, 10pm, Saturday.</div>
+  </div>
+</section>
+
+<!-- 9 WAITLIST -->
+<section class="waitlist" id="waitlist">
+  <div class="l">
+    <div class="mono label-amber" style="color:var(--amber)">07 / WHAT'S NEXT</div>
+    <h2>We're opening access<br><span class="it">in phases.</span></h2>
+    <p>The waitlist is the way in. Early users help shape what GrantsIn becomes. When we open access to the first batch, you'll be there.</p>
+  </div>
+  <div class="r">
+    <form class="formpanel" onsubmit="event.preventDefault();this.innerHTML='<div style=\'color:var(--cream);font-family:Fraunces,serif;font-size:22px\'>Added — thank you.</div>'">
+      <label for="em">Email</label>
+      <input id="em" type="email" required placeholder="you@nonprofit.org" />
+      <button class="btn" type="submit">Add me to the list</button>
+      <div class="micro">We email when something matters. No newsletter. No drip.</div>
+    </form>
+  </div>
+</section>
+
+<!-- 10 FOOTER -->
+<footer class="foot">
+  <div>GrantsIn is built by Humainority, a 501(c)(3) nonprofit. Equity for AI.</div>
+  <div>© 2026</div>
+</footer>
+
+<script>
+window.addEventListener('load',()=>{
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Hero
+  gsap.to('#heroH1',{opacity:1,y:0,duration:0.6,ease:'power2.out'});
+  gsap.to('.docstack .doc',{opacity:1,scale:1,duration:0.6,delay:0.5,stagger:0.1,ease:'power2.out',
+    onComplete(){
+      // restore rotations
+      document.querySelector('.doc.d1').style.transform='rotate(-3deg)';
+      document.querySelector('.doc.d2').style.transform='rotate(0deg)';
+      document.querySelector('.doc.d3').style.transform='rotate(4deg)';
+    }});
+
+  // Scatter chips
+  gsap.to('#scatter .chip',{opacity:1,duration:0.5,stagger:0.08,ease:'power2.out',
+    scrollTrigger:{trigger:'#scatter',start:'top 75%'}});
+
+  // Warn underline
+  gsap.to('#warnRow::after',{}); // placeholder
+  ScrollTrigger.create({trigger:'#warnRow',start:'top 80%',once:true,
+    onEnter(){
+      const row=document.getElementById('warnRow');
+      const bar=document.createElement('span');
+      bar.style.cssText='position:absolute;left:0;bottom:4px;height:2px;background:var(--amber);width:0;display:block';
+      row.appendChild(bar);
+      gsap.to(bar,{width:'100%',duration:0.8,ease:'power2.out'});
+    }
+  });
+});
+</script>
+</body>
+</html>
